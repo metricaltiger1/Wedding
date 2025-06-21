@@ -1,0 +1,95 @@
+module.exports = {
+  content: [
+    "./index.html",
+    "./src/**/*.{js,ts,jsx,tsx}",
+  ],
+  theme: {
+    extend: {
+      colors: {
+        navy: {
+          DEFAULT: '#001F3F',
+          50: '#F5F8FA',
+          100: '#E6EBF0',
+          200: '#C8D4E0',
+          300: '#99B3C9',
+          400: '#5C85A8',
+          500: '#001F3F',
+          600: '#001B38',
+          700: '#00162D',
+          800: '#001222',
+          900: '#000D17',
+        },
+        orange: {
+          DEFAULT: '#CC5500',
+          50: '#FFF5EF',
+          100: '#FFE8D9',
+          200: '#FFD0B3',
+          300: '#FFB88D',
+          400: '#FF9F66',
+          500: '#CC5500',
+          600: '#B34A00',
+          700: '#993F00',
+          800: '#803400',
+          900: '#662900',
+        },
+        gold: {
+          DEFAULT: '#D4AF37',
+          50: '#FBF7ED',
+          100: '#F7EEDB',
+          200: '#EFDCB6',
+          300: '#E7CB92',
+          400: '#DFB96D',
+          500: '#D4AF37',
+          600: '#B8972F',
+          700: '#9C7F27',
+          800: '#80671F',
+          900: '#644F18',
+        },
+        'navy-blue': '#0b1d3a',
+        'burnt-orange': '#cc5500',
+        'metallic-gold': '#d4af37',
+        'deep-burgundy': '#2c0d0d',
+        'dark-rose': '#1a0505',
+      },
+      fontFamily: {
+        playfair: ['"Playfair Display"', 'serif'],
+        poppins: ['Poppins', 'sans-serif'],
+      },
+      animation: {
+        float: 'float 6s ease-in-out infinite',
+        pulse: 'pulse 2s infinite',
+        heartBeat: 'heartBeat 1.3s ease infinite',
+        bounce: 'bounce 1s infinite alternate',
+        spin: 'spin 4s linear infinite',
+        'spin-slow': 'spin 3s linear infinite',
+        'heart-pulse': 'heartPulse 1.5s ease-in-out infinite',
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-20px)' },
+        },
+        pulse: {
+          '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+          '50%': { transform: 'scale(1.05)', opacity: '0.8' },
+        },
+        heartBeat: {
+          '0%': { transform: 'scale(1)' },
+          '14%': { transform: 'scale(1.3)' },
+          '28%': { transform: 'scale(1)' },
+          '42%': { transform: 'scale(1.3)' },
+          '70%': { transform: 'scale(1)' },
+        },
+        bounce: {
+          '0%': { transform: 'rotate(-45deg) translateY(0)' },
+          '100%': { transform: 'rotate(-45deg) translateY(-10px)' },
+        },
+         heartPulse: {
+          '0%, 100%': { transform: 'scale(1)', opacity: '1' },
+          '50%': { transform: 'scale(1.2)', opacity: '0.8' },
+        }
+      },
+    },
+  },
+  plugins: [],
+}
