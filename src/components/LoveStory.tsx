@@ -37,20 +37,20 @@ const LoveStory = () => {
 const stories: Story[] = [
   {
     title: "How We Met",
-    content: `<p>It began with a simple “Hi” and a smile — a brief encounter that sparked curiosity and connection.</p>
-    <p class="mt-4">Later that day, a mysterious call confirmed what one heart already knew — something special had begun.</p>
+    content: `<p>It all began in 2004 at KCB Bank, Mumias. Stellah walked in to withdraw some money, and a banker named Tom Oyier assisted her. During their chat, Tom made a call — and that’s when Daniel walked over and said a simple "Hi" with a smile.</p>
+    <p class="mt-4">Later that evening, Stellah received a call from a ‘secret admirer.’ The moment she heard the voice, she knew — it was the smiling guy from the bank. That was the start of something truly special.</p>
     <p class="mt-4 text-rose-600 italic">"I just knew that voice — it was him." - Stellah</p>`,
     icon: <FaBuilding className="text-2xl" />,
     date: "2004",
-    tags: ["Fateful Encounter"],
+    tags: ["Bank Encounter", "Destiny"],
     color: "bg-amber-100",
     image: "/assets/images/how-we-met.jpg"
   },
   {
     title: "Our First Date",
-    content: `<p>A simple meal, laughter, and one lighthearted moment — that’s all it took to turn comfort into connection.</p>
-    <p class="mt-4">From that day forward, spending time together became something they looked forward to.</p>
-    <p class="mt-4 text-rose-600 italic">"That moment sealed it." - Stellah</p>`,
+    content: `<p>Daniel invited Stellah for dinner — classic chips and kuku. It was casual, fun, and full of laughter. In a playful moment, he fed her a little *kimaringo*. That lighthearted meal sparked a deeper connection.</p>
+    <p class="mt-4">From that day, moments together became something both of them looked forward to.</p>
+    <p class="mt-4 text-rose-600 italic">"That kimaringo moment sealed it." - Stellah</p>`,
     icon: <FaUtensils className="text-2xl" />,
     date: "2004",
     tags: ["First Date", "Simple Joys"],
@@ -59,28 +59,27 @@ const stories: Story[] = [
   },
   {
     title: "The Proposal",
-    content: `<p>After time apart, a call came — not dramatic, just honest. “Are we moving forward or not?”</p>
-    <p class="mt-4">She said YES. The quiet, thoughtful commitment meant everything.</p>
+    content: `<p>In 2009, after spending a year apart, Daniel made a call. It wasn’t your typical romantic proposal — he asked Stellah to decide if they were taking their relationship to the next level or not.</p>
+    <p class="mt-4">She said YES. Soon after, they visited his parents and family together — a quiet but meaningful affirmation of love and commitment.</p>
     <p class="mt-4 text-rose-600 italic">"Classic Dan — no flowers, just truth." - Stellah</p>`,
     icon: <FaGem className="text-2xl" />,
     date: "2009",
-    tags: ["Commitment", "Engagement"],
+    tags: ["Real Talk", "Engagement"],
     color: "bg-rose-100",
     image: "/assets/images/proposal.jpg"
   },
   {
     title: "We Say I Do",
-    content: `<p>For years, the dream of a church wedding lingered. One day, Dan simply said, “Let’s do it.”</p>
-    <p class="mt-4">This moment is a fulfillment of faith, love, and answered prayers.</p>
+    content: `<p>For years, Stellah prayed for a church wedding. Dan had his reservations — he'd seen many marriages fall apart even after church ceremonies. But in 2025, something changed.</p>
+    <p class="mt-4">Dan came to Stellah and said, “The Lord has spoken — let’s solemnize our marriage.” That moment was nothing short of divine. This wedding is God's doing, and they’re walking into it in faith and love.</p>
     <p class="mt-4 text-rose-600 italic">"The Lord appeared to him... and now here we are." - Stellah</p>`,
     icon: <FaHeart className="text-2xl" />,
     date: "August 9, 2025",
-    tags: ["Church Wedding", "Faith"],
+    tags: ["Church Wedding", "Faith", "Grace"],
     color: "bg-purple-100",
     image: "/assets/images/wedding-day.jpg"
   },
 ];
-
 
 
   const openStory = (story: Story, index: number) => {
