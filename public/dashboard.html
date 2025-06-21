@@ -1,0 +1,983 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Wedding RSVP Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Playfair+Display:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <style>
+      :root {
+        --primary: #2c3e50;
+        --secondary: #34495e;
+        --accent: #e74c3c;
+        --light-accent: #f39c12;
+        --text: #333;
+        --light-text: #ecf0f1;
+        --border: #dfe6e9;
+        --success: #27ae60;
+        --warning: #f1c40f;
+        --danger: #e74c3c;
+        --bg: #f5f6fa;
+        --card-bg: #ffffff;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: "Montserrat", sans-serif;
+        background-color: var(--bg);
+        color: var(--text);
+        line-height: 1.6;
+      }
+
+      .container {
+        max-width: 1400px;
+        margin: 0 auto;
+        padding: 20px;
+      }
+
+      header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+        padding-bottom: 20px;
+        border-bottom: 1px solid var(--border);
+      }
+
+      h1,
+      h2,
+      h3 {
+        font-family: "Playfair Display", serif;
+        font-weight: 600;
+      }
+
+      h1 {
+        color: var(--primary);
+        font-size: 2.2rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        color: var(--secondary);
+      }
+
+      .stats-container {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+      }
+
+      .stat-card {
+        background: var(--card-bg);
+        border-radius: 10px;
+        padding: 20px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .stat-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+      }
+
+      .stat-card h3 {
+        font-size: 1rem;
+        color: var(--secondary);
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+      }
+
+      .stat-card h3 i {
+        margin-right: 10px;
+        font-size: 1.2rem;
+      }
+
+      .stat-card .value {
+        font-size: 2rem;
+        font-weight: 700;
+        color: var(--primary);
+      }
+
+      .confirmed {
+        color: var(--success);
+      }
+
+      .declined {
+        color: var(--danger);
+      }
+
+      .controls {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+        flex-wrap: wrap;
+        gap: 15px;
+      }
+
+      .filter-group {
+        display: flex;
+        align-items: center;
+        gap: 15px;
+        flex-wrap: wrap;
+      }
+
+      .filter-item {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      label {
+        font-weight: 500;
+        font-size: 0.9rem;
+      }
+
+      select,
+      input {
+        padding: 8px 12px;
+        border: 1px solid var(--border);
+        border-radius: 5px;
+        font-family: inherit;
+        background-color: var(--card-bg);
+      }
+
+      button {
+        padding: 8px 16px;
+        border: none;
+        border-radius: 5px;
+        font-family: inherit;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+
+      .btn-primary {
+        background-color: var(--primary);
+        color: white;
+      }
+
+      .btn-primary:hover {
+        background-color: var(--secondary);
+      }
+
+      .btn-outline {
+        background-color: transparent;
+        border: 1px solid var(--primary);
+        color: var(--primary);
+      }
+
+      .btn-outline:hover {
+        background-color: var(--primary);
+        color: white;
+      }
+
+      .btn-danger {
+        background-color: var(--danger);
+        color: white;
+      }
+
+      .btn-danger:hover {
+        background-color: #c0392b;
+      }
+
+      .btn-success {
+        background-color: var(--success);
+        color: white;
+      }
+
+      .btn-success:hover {
+        background-color: #219653;
+      }
+
+      .btn-warning {
+        background-color: var(--warning);
+        color: var(--text);
+      }
+
+      .btn-warning:hover {
+        background-color: #f39c12;
+      }
+
+      .table-container {
+        background: var(--card-bg);
+        border-radius: 10px;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        overflow-x: auto;
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+
+      th,
+      td {
+        padding: 12px 15px;
+        text-align: left;
+        border-bottom: 1px solid var(--border);
+      }
+
+      th {
+        background-color: var(--primary);
+        color: white;
+        font-weight: 500;
+        text-transform: uppercase;
+        font-size: 0.8rem;
+        letter-spacing: 0.5px;
+      }
+
+      tr:hover {
+        background-color: rgba(0, 0, 0, 0.02);
+      }
+
+      .status {
+        padding: 5px 10px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 500;
+      }
+
+      .status.confirmed {
+        background-color: rgba(39, 174, 96, 0.1);
+        color: var(--success);
+      }
+
+      .status.declined {
+        background-color: rgba(231, 76, 60, 0.1);
+        color: var(--danger);
+      }
+
+      .pagination {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+        gap: 5px;
+      }
+
+      .pagination button {
+        min-width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .pagination button.active {
+        background-color: var(--primary);
+        color: white;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 50px 20px;
+        color: var(--secondary);
+      }
+
+      .empty-state i {
+        font-size: 3rem;
+        margin-bottom: 20px;
+        color: var(--border);
+      }
+
+      .empty-state p {
+        font-size: 1.1rem;
+        margin-bottom: 20px;
+      }
+
+      .modal {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        z-index: 1000;
+        opacity: 0;
+        visibility: hidden;
+        transition: all 0.3s ease;
+      }
+
+      .modal.active {
+        opacity: 1;
+        visibility: visible;
+      }
+
+      .modal-content {
+        background-color: var(--card-bg);
+        border-radius: 10px;
+        width: 90%;
+        max-width: 500px;
+        padding: 30px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        transform: translateY(-20px);
+        transition: transform 0.3s ease;
+      }
+
+      .modal.active .modal-content {
+        transform: translateY(0);
+      }
+
+      .modal-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 20px;
+      }
+
+      .modal-header h3 {
+        font-size: 1.5rem;
+        color: var(--primary);
+      }
+
+      .modal-header .close {
+        font-size: 1.5rem;
+        cursor: pointer;
+        color: var(--secondary);
+      }
+
+      .modal-body {
+        margin-bottom: 30px;
+      }
+
+      .modal-footer {
+        display: flex;
+        justify-content: flex-end;
+        gap: 10px;
+      }
+
+      @media (max-width: 768px) {
+        .stats-container {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .controls {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        .filter-group {
+          width: 100%;
+        }
+
+        .export-buttons {
+          width: 100%;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          gap: 10px;
+        }
+
+        th,
+        td {
+          padding: 8px 10px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        .stats-container {
+          grid-template-columns: 1fr;
+        }
+
+        .filter-item {
+          width: 100%;
+        }
+
+        select,
+        input {
+          width: 100%;
+        }
+
+        .export-buttons {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <h1>Wedding RSVP Dashboard</h1>
+        <div id="last-updated">Last updated: Just now</div>
+      </header>
+
+      <div class="stats-container">
+        <div class="stat-card">
+          <h3><i class="fas fa-users"></i> Total Responses</h3>
+          <div class="value" id="total-responses">0</div>
+        </div>
+        <div class="stat-card">
+          <h3><i class="fas fa-check-circle confirmed"></i> Confirmed</h3>
+          <div class="value confirmed" id="confirmed-count">0</div>
+        </div>
+        <div class="stat-card">
+          <h3><i class="fas fa-times-circle declined"></i> Declined</h3>
+          <div class="value declined" id="declined-count">0</div>
+        </div>
+        <div class="stat-card">
+          <h3><i class="fas fa-user-friends"></i> Total Guests</h3>
+          <div class="value" id="total-guests">0</div>
+        </div>
+      </div>
+
+      <div class="controls">
+        <div class="filter-group">
+          <div class="filter-item">
+            <label for="status-filter">Status:</label>
+            <select id="status-filter">
+              <option value="all">All</option>
+              <option value="confirmed">Confirmed</option>
+              <option value="declined">Declined</option>
+            </select>
+          </div>
+          <div class="filter-item">
+            <label for="search">Search:</label>
+            <input type="text" id="search" placeholder="Search names..." />
+          </div>
+          <button id="reset-filters" class="btn-outline">
+            <i class="fas fa-redo"></i> Reset
+          </button>
+        </div>
+        <div class="export-buttons">
+          <button id="export-csv" class="btn-primary">
+            <i class="fas fa-file-csv"></i> Export CSV
+          </button>
+          <button id="export-pdf" class="btn-primary">
+            <i class="fas fa-file-pdf"></i> Export PDF
+          </button>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table id="responses-table">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Status</th>
+              <th>Guests</th>
+              <th>Message</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="table-body">
+            <!-- Data will be inserted here -->
+          </tbody>
+        </table>
+        <div id="empty-state" class="empty-state" style="display: none">
+          <i class="fas fa-inbox"></i>
+          <p>No RSVP responses found</p>
+          <button id="refresh-data" class="btn-primary">
+            <i class="fas fa-sync"></i> Refresh Data
+          </button>
+        </div>
+      </div>
+
+      <div class="pagination" id="pagination">
+        <!-- Pagination will be inserted here -->
+      </div>
+    </div>
+
+    <!-- Modal for viewing full message -->
+    <div class="modal" id="message-modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h3>Guest Message</h3>
+          <span class="close">&times;</span>
+        </div>
+        <div class="modal-body" id="modal-message-content">
+          <!-- Message content will be inserted here -->
+        </div>
+        <div class="modal-footer">
+          <button class="btn-outline" id="close-modal">Close</button>
+        </div>
+      </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.6.0/firebase-firestore-compat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.0/papaparse.min.js"></script>
+
+    <script>
+      // Initialize Firebase
+      const firebaseConfig = {
+        apiKey: "AIzaSyACpMEvl1rCROR72TPFUJL38E5iqNGI-zI",
+        authDomain: "monah-ai.firebaseapp.com",
+        databaseURL: "https://monah-ai-default-rtdb.firebaseio.com",
+        projectId: "monah-ai",
+        storageBucket: "monah-ai.firebasestorage.app",
+        messagingSenderId: "37108718640",
+        appId: "1:37108718640:web:5446955a4893eea2c7a1f5",
+        measurementId: "G-R40TDWL0FJ",
+      };
+
+      firebase.initializeApp(firebaseConfig);
+      const db = firebase.firestore();
+
+      // Initialize jsPDF
+      const { jsPDF } = window.jspdf;
+
+      // DOM elements
+      const tableBody = document.getElementById("table-body");
+      const emptyState = document.getElementById("empty-state");
+      const statusFilter = document.getElementById("status-filter");
+      const searchInput = document.getElementById("search");
+      const resetFiltersBtn = document.getElementById("reset-filters");
+      const exportCsvBtn = document.getElementById("export-csv");
+      const exportPdfBtn = document.getElementById("export-pdf");
+      const refreshDataBtn = document.getElementById("refresh-data");
+      const messageModal = document.getElementById("message-modal");
+      const modalMessageContent = document.getElementById(
+        "modal-message-content"
+      );
+      const closeModalBtn = document.getElementById("close-modal");
+      const modalCloseBtn = document.querySelector(".modal-header .close");
+      const paginationContainer = document.getElementById("pagination");
+      const lastUpdatedEl = document.getElementById("last-updated");
+
+      // Stats elements
+      const totalResponsesEl = document.getElementById("total-responses");
+      const confirmedCountEl = document.getElementById("confirmed-count");
+      const declinedCountEl = document.getElementById("declined-count");
+      const totalGuestsEl = document.getElementById("total-guests");
+
+      // App state
+      let allResponses = [];
+      let filteredResponses = [];
+      let currentPage = 1;
+      const rowsPerPage = 10;
+
+      // Initialize the app
+      function init() {
+        fetchResponses();
+        setupEventListeners();
+      }
+
+      // Set up event listeners
+      function setupEventListeners() {
+        statusFilter.addEventListener("change", filterResponses);
+        searchInput.addEventListener("input", filterResponses);
+        resetFiltersBtn.addEventListener("click", resetFilters);
+        exportCsvBtn.addEventListener("click", exportToCsv);
+        exportPdfBtn.addEventListener("click", exportToPdf);
+        refreshDataBtn.addEventListener("click", fetchResponses);
+        closeModalBtn.addEventListener("click", closeModal);
+        modalCloseBtn.addEventListener("click", closeModal);
+        messageModal.addEventListener("click", (e) => {
+          if (e.target === messageModal) closeModal();
+        });
+      }
+
+      // Fetch responses from Firestore
+      function fetchResponses() {
+        db.collection("dan-stella-wedding/2025/rsvps")
+          .orderBy("timestamp", "desc")
+          .get()
+          .then((querySnapshot) => {
+            allResponses = [];
+            querySnapshot.forEach((doc) => {
+              const data = doc.data();
+              allResponses.push({
+                id: doc.id,
+                name: data.name,
+                attending: data.attending,
+                guestCount: data.guestCount || 0,
+                message: data.message || "",
+                timestamp: data.timestamp?.toDate() || new Date(),
+                status:
+                  data.status ||
+                  (data.attending === "yes" ? "confirmed" : "declined"),
+              });
+            });
+
+            updateLastUpdated();
+            updateStats();
+            filterResponses();
+          })
+          .catch((error) => {
+            console.error("Error getting documents: ", error);
+            alert("Error fetching data. Please check console for details.");
+          });
+      }
+
+      // Filter responses based on selected filters
+      function filterResponses() {
+        const statusFilterValue = statusFilter.value;
+        const searchTerm = searchInput.value.toLowerCase();
+
+        filteredResponses = allResponses.filter((response) => {
+          // Filter by status
+          if (
+            statusFilterValue !== "all" &&
+            response.status !== statusFilterValue
+          ) {
+            return false;
+          }
+
+          // Filter by search term
+          if (searchTerm && !response.name.toLowerCase().includes(searchTerm)) {
+            return false;
+          }
+
+          return true;
+        });
+
+        currentPage = 1;
+        renderTable();
+        renderPagination();
+      }
+
+      // Reset all filters
+      function resetFilters() {
+        statusFilter.value = "all";
+        searchInput.value = "";
+        filterResponses();
+      }
+
+      // Render the table with filtered responses
+      function renderTable() {
+        if (filteredResponses.length === 0) {
+          tableBody.innerHTML = "";
+          emptyState.style.display = "block";
+          return;
+        }
+
+        emptyState.style.display = "none";
+
+        // Calculate pagination
+        const startIndex = (currentPage - 1) * rowsPerPage;
+        const endIndex = Math.min(
+          startIndex + rowsPerPage,
+          filteredResponses.length
+        );
+        const paginatedResponses = filteredResponses.slice(
+          startIndex,
+          endIndex
+        );
+
+        tableBody.innerHTML = "";
+
+        paginatedResponses.forEach((response) => {
+          const row = document.createElement("tr");
+
+          // Format date
+          const date = response.timestamp;
+          const formattedDate = date.toLocaleDateString("en-US", {
+            year: "numeric",
+            month: "short",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+
+          // Truncate message if too long
+          const truncatedMessage =
+            response.message.length > 30
+              ? response.message.substring(0, 30) + "..."
+              : response.message || "N/A";
+
+          row.innerHTML = `
+                    <td>${response.name}</td>
+                    <td><span class="status ${response.status}">${
+            response.status === "confirmed" ? "Confirmed" : "Declined"
+          }</span></td>
+                    <td>${
+                      response.attending === "yes" ? response.guestCount : "0"
+                    }</td>
+                    <td>${truncatedMessage}</td>
+                    <td>${formattedDate}</td>
+                    <td>
+                        ${
+                          response.message
+                            ? `<button class="btn-outline view-message" data-message="${escapeHtml(
+                                response.message
+                              )}">
+                            <i class="fas fa-eye"></i> View
+                        </button>`
+                            : "N/A"
+                        }
+                    </td>
+                `;
+
+          tableBody.appendChild(row);
+        });
+
+        // Add event listeners to view message buttons
+        document.querySelectorAll(".view-message").forEach((button) => {
+          button.addEventListener("click", (e) => {
+            const message = button.getAttribute("data-message");
+            showModal(message);
+          });
+        });
+      }
+
+      // Render pagination controls
+      function renderPagination() {
+        if (filteredResponses.length <= rowsPerPage) {
+          paginationContainer.innerHTML = "";
+          return;
+        }
+
+        const totalPages = Math.ceil(filteredResponses.length / rowsPerPage);
+        let paginationHTML = "";
+
+        // Previous button
+        paginationHTML += `
+                <button class="btn-outline ${
+                  currentPage === 1 ? "disabled" : ""
+                }" 
+                        ${currentPage === 1 ? "disabled" : ""} 
+                        id="prev-page">
+                    <i class="fas fa-chevron-left"></i>
+                </button>
+            `;
+
+        // Page numbers
+        for (let i = 1; i <= totalPages; i++) {
+          paginationHTML += `
+                    <button class="${
+                      currentPage === i ? "btn-primary active" : "btn-outline"
+                    }" 
+                            data-page="${i}">
+                        ${i}
+                    </button>
+                `;
+        }
+
+        // Next button
+        paginationHTML += `
+                <button class="btn-outline ${
+                  currentPage === totalPages ? "disabled" : ""
+                }" 
+                        ${currentPage === totalPages ? "disabled" : ""} 
+                        id="next-page">
+                    <i class="fas fa-chevron-right"></i>
+                </button>
+            `;
+
+        paginationContainer.innerHTML = paginationHTML;
+
+        // Add event listeners to pagination buttons
+        document.querySelectorAll("[data-page]").forEach((button) => {
+          button.addEventListener("click", () => {
+            currentPage = parseInt(button.getAttribute("data-page"));
+            renderTable();
+            renderPagination();
+          });
+        });
+
+        document.getElementById("prev-page")?.addEventListener("click", () => {
+          if (currentPage > 1) {
+            currentPage--;
+            renderTable();
+            renderPagination();
+          }
+        });
+
+        document.getElementById("next-page")?.addEventListener("click", () => {
+          if (currentPage < totalPages) {
+            currentPage++;
+            renderTable();
+            renderPagination();
+          }
+        });
+      }
+
+      // Show modal with full message
+      function showModal(message) {
+        modalMessageContent.innerHTML =
+          message || "<em>No message provided</em>";
+        messageModal.classList.add("active");
+        document.body.style.overflow = "hidden";
+      }
+
+      // Close modal
+      function closeModal() {
+        messageModal.classList.remove("active");
+        document.body.style.overflow = "auto";
+      }
+
+      // Update statistics
+      function updateStats() {
+        totalResponsesEl.textContent = allResponses.length;
+
+        const confirmed = allResponses.filter(
+          (r) => r.status === "confirmed"
+        ).length;
+        const declined = allResponses.filter(
+          (r) => r.status === "declined"
+        ).length;
+
+        confirmedCountEl.textContent = confirmed;
+        declinedCountEl.textContent = declined;
+
+        const totalGuests = allResponses
+          .filter((r) => r.status === "confirmed")
+          .reduce((sum, r) => sum + (r.guestCount || 0), 0);
+
+        totalGuestsEl.textContent = totalGuests;
+      }
+
+      // Update last updated time
+      function updateLastUpdated() {
+        const now = new Date();
+        const formattedTime = now.toLocaleTimeString("en-US", {
+          hour: "2-digit",
+          minute: "2-digit",
+          second: "2-digit",
+        });
+        lastUpdatedEl.textContent = `Last updated: ${formattedTime}`;
+      }
+
+      // Export to CSV
+      function exportToCsv() {
+        const dataToExport =
+          filteredResponses.length > 0 ? filteredResponses : allResponses;
+
+        if (dataToExport.length === 0) {
+          alert("No data to export");
+          return;
+        }
+
+        // Prepare data for CSV
+        const csvData = dataToExport.map((response) => ({
+          Name: response.name,
+          Status: response.status === "confirmed" ? "Confirmed" : "Declined",
+          Guests: response.attending === "yes" ? response.guestCount : 0,
+          Message: response.message || "",
+          Date: response.timestamp.toLocaleString(),
+        }));
+
+        // Convert to CSV
+        const csv = Papa.unparse(csvData);
+
+        // Create download link
+        const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        const url = URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute(
+          "download",
+          `wedding-rsvps-${new Date().toISOString().slice(0, 10)}.csv`
+        );
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      }
+
+      // Export to PDF
+      function exportToPdf() {
+        const dataToExport =
+          filteredResponses.length > 0 ? filteredResponses : allResponses;
+
+        if (dataToExport.length === 0) {
+          alert("No data to export");
+          return;
+        }
+
+        // Create new PDF
+        const doc = new jsPDF();
+
+        // Add title
+        doc.setFontSize(18);
+        doc.setTextColor(44, 62, 80);
+        doc.text("Wedding RSVP Responses", 105, 20, { align: "center" });
+
+        // Add subtitle with date and filter info
+        doc.setFontSize(10);
+        doc.setTextColor(100, 100, 100);
+
+        let subtitle = `Generated on ${new Date().toLocaleDateString()}`;
+        if (filteredResponses.length > 0) {
+          if (statusFilter.value !== "all") {
+            subtitle += ` | Filtered by status: ${statusFilter.value}`;
+          }
+          if (searchInput.value) {
+            subtitle += ` | Search term: ${searchInput.value}`;
+          }
+        }
+
+        doc.text(subtitle, 105, 28, { align: "center" });
+
+        // Prepare data for table
+        const tableData = dataToExport.map((response) => [
+          response.name,
+          response.status === "confirmed" ? "Confirmed" : "Declined",
+          response.attending === "yes" ? response.guestCount.toString() : "0",
+          response.message || "N/A",
+          response.timestamp.toLocaleDateString(),
+        ]);
+
+        // Add table
+        doc.autoTable({
+          head: [["Name", "Status", "Guests", "Message", "Date"]],
+          body: tableData,
+          startY: 35,
+          headStyles: {
+            fillColor: [44, 62, 80],
+            textColor: 255,
+            fontStyle: "bold",
+          },
+          alternateRowStyles: {
+            fillColor: [240, 240, 240],
+          },
+          styles: {
+            fontSize: 9,
+            cellPadding: 3,
+            overflow: "linebreak",
+          },
+          columnStyles: {
+            3: { cellWidth: 60 }, // Message column width
+          },
+        });
+
+        // Add footer
+        const pageCount = doc.internal.getNumberOfPages();
+        for (let i = 1; i <= pageCount; i++) {
+          doc.setPage(i);
+          doc.setFontSize(8);
+          doc.setTextColor(150);
+          doc.text(`Page ${i} of ${pageCount}`, 105, 287, { align: "center" });
+        }
+
+        // Save PDF
+        doc.save(`wedding-rsvps-${new Date().toISOString().slice(0, 10)}.pdf`);
+      }
+
+      // Helper function to escape HTML
+      function escapeHtml(unsafe) {
+        return unsafe
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      // Initialize the app when DOM is loaded
+      document.addEventListener("DOMContentLoaded", init);
+    </script>
+  </body>
+</html>

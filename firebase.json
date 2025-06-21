@@ -6,6 +6,7 @@
     "indexes": "firestore.indexes.json"
   },
   "hosting": {
+    "site": "dan-stella-wedding",
     "public": "dist",
     "ignore": [
       "firebase.json",
@@ -13,6 +14,10 @@
       "**/node_modules/**"
     ],
     "rewrites": [
+      {
+        "source": "/rsvps",
+        "destination": "/rsvps.html"
+      },
       {
         "source": "**",
         "destination": "/index.html"
